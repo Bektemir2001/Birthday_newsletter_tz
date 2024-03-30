@@ -47,12 +47,15 @@ class CustomerService
             $parsedCsv[0][1] == 'ФИО' &&
             $parsedCsv[0][2] == 'День рождения') {
             unset($parsedCsv[0]);
-
             foreach ($parsedCsv as $row) {
+                if(count($row) != 3)
+                {
+                    continue;
+                }
                 $customer = new Customer();
                 $customer->phone_number = $row[0];
                 $customer->full_name = $row[1];
-                $customer->birthdate = $row[2];
+                $customer->birthday = $row[2];
                 $customer->save();
             }
 

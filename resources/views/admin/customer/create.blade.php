@@ -58,11 +58,14 @@
                     <div class="card">
                     </div>
                 </div>
-                <form action="{{route('customers.upload.file')}}" method="POST">
+                <form action="{{route('customers.upload.file')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="file">csv/xls файл</label>
                         <input type="file" class="form-control" id="file" name="file" accept=".csv, .xls, .xlsx">
+                        @error('file')
+                        <p class="text-danger">{{$message}}</p>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <a href="{{route('customers.index')}}" class="btn bg-danger">Cancel</a>
