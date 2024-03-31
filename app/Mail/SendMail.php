@@ -17,17 +17,20 @@ class SendMail extends Mailable
 
     protected CustomerMail $customerMail;
     protected string $message;
-    public function __construct(CustomerMail $customerMail, string $message)
+    protected string $name;
+    public function __construct(CustomerMail $customerMail, string $message, string $name)
     {
         $this->customerMail = $customerMail;
         $this->message = $message;
+        $this->name = $name;
     }
 
     public function build()
     {
-        $customer = $this->customerMail->customer();
-        $message = $this->message;
-        return $this->from(env('MAIL_USERNAME'), 'Email notification!')
-            ->view('mail.sendMessage', compact('customer', 'message'));
+        $customer = $this->customerMail->customer;
+        $msg = $this->message;
+        $mailing_name = $this->name;
+        return $this->from(env('MAIL_FROM_ADDRESS'), $mailing_name)
+            ->view('mail.sendMessage', compact('customer', 'msg', 'mailing_name'));
     }
 }

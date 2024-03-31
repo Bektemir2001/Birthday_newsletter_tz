@@ -22,7 +22,7 @@ class UploadCustomerFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|mimetypes:text/csv,application/vnd.ms-excel'
+            'file' => 'required'
         ];
     }
 }

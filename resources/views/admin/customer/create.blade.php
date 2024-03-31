@@ -23,15 +23,19 @@
                     @csrf
                     <div class="form-group">
                         <label for="full_name">ФИО</label>
-                        <input type="text" class="form-control" id="full_name" name="full_name">
+                        <input type="text" class="form-control" id="full_name" name="full_name" required autofocus>
                     </div>
                     <div class="form-group">
                         <label for="phone_number">Телефон</label>
-                        <input type="text" class="form-control" id="phone_number" name="phone_number">
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" required autofocus>
                     </div>
                     <div class="form-group">
                         <label for="birthday">День рождения</label>
-                        <input type="date" class="form-control" id="birthday" name="birthday">
+                        <input type="date" class="form-control" id="birthday" name="birthday" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Почта</label>
+                        <input type="email" class="form-control" id="email" name="email" required autofocus>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <a href="{{route('customers.index')}}" class="btn bg-danger">Cancel</a>

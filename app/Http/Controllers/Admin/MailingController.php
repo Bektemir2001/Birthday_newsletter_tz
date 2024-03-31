@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MailingRequest;
 use App\Models\Mailing;
 use App\Services\MailService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class MailingController extends Controller
 {
-    protected MailService $SMSService;
+    protected MailService $mailService;
 
-    public function __construct(MailService $SMSService)
+    public function __construct(MailService $mailService)
     {
-        $this->SMSService = $SMSService;
+        $this->mailService = $mailService;
     }
 
     public function index(): View
@@ -28,8 +29,29 @@ class MailingController extends Controller
     public function store(MailingRequest $request): Response
     {
         $data = $request->validated();
-        $result = $this->SMSService->send($data);
+        $result = $this->mailService->send($data);
         return response(['message' => $result['message']])->setStatusCode($result['status']);
+    }
+
+    public function stop(Mailing $mailing): RedirectResponse
+    {
+        $mailing->update(['status' => 2]);
+        return back()->with(['notification' => "$mailing->name is stopped"]);
+    }
+
+    public function show(Mailing $mailing)
+    {
+        return view('admin.mails.show', compact('mailing'));
+    }
+
+    public function chart()
+    {
+
+    }
+
+    public function pie()
+    {
+
     }
 
 }

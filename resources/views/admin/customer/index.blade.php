@@ -23,6 +23,7 @@
                     </th>
                     <th scope="col">ID</th>
                     <th scope="col">ФИО</th>
+                    <th scope="col">Почта</th>
                     <th scope="col">День рождения</th>
                     <th scope="col">Телефон</th>
                 </tr>
@@ -39,6 +40,7 @@
                         </th>
                         <td>{{$customer->id}}</td>
                         <td>{{$customer->full_name}}</td>
+                        <td>{{$customer->email}}</td>
                         <td>{{$customer->birthday}}</td>
                         <td>{{$customer->phone_number}}</td>
                     </tr>
@@ -47,7 +49,7 @@
             </table>
         </div>
     </div>
-    @include('includes.SMSModal')
+    @include('includes.MailingModal')
     <script>
         let checked_users = [];
         function checkAll()
@@ -105,7 +107,7 @@
                 data.append('name', name.value);
                 data.append('msg', msg.value);
                 data.append('customer_ids', checked_users);
-                let url = "{{route('sms.store')}}";
+                let url = "{{route('mailing.store')}}";
                 fetch(url, {
                     method: 'POST',
                     headers: {
@@ -116,6 +118,7 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log(data);
+                        location.href = "{{route('mailing.index')}}";
                     })
                     .catch(e => {
                         console.log(e);

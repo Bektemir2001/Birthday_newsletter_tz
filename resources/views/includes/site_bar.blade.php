@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class=" sidebar-layout">
-                    <a href="{{route('sms.index')}}" class="svg-icon">
+                    <a href="{{route('mailing.index')}}" class="svg-icon">
                         <i class="">
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

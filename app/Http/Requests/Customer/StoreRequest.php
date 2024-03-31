@@ -24,7 +24,8 @@ class StoreRequest extends FormRequest
         return [
             'full_name' => 'required',
             'phone_number' => 'required',
-            'birthday' => 'required'
+            'birthday' => 'required',
+            'email' => 'required'
         ];
     }
 }

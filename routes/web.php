@@ -9,6 +9,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/failed-jobs', function (){
+    dd(\Illuminate\Support\Facades\DB::table('failed_jobs')->get());
+});
 Auth::routes();
 
 Route::group(['prefix' => 'admin'], function (){
@@ -21,8 +24,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::post('/file', [CustomerController::class, 'uploadCustomerFile'])->name('customers.upload.file');
     });
 
-    Route::group(['prefix' => 'sms_mailing'], function (){
-        Route::post('/', [MailingController::class, 'store'])->name('sms.store');
-        Route::get('/', [MailingController::class, 'index'])->name('sms.index');
+    Route::group(['prefix' => 'mailing'], function (){
+        Route::post('/', [MailingController::class, 'store'])->name('mailing.store');
+        Route::get('/', [MailingController::class, 'index'])->name('mailing.index');
+        Route::get('/stop/{mailing}', [MailingController::class, 'stop'])->name('mailing.stop');
+        Route::get('/show/{mailing}', [MailingController::class, 'show'])->name('mailing.show');
     });
 });

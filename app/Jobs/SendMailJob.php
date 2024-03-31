@@ -29,11 +29,15 @@ class SendMailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $customersMails = $this->mailing->customerMails();
+        $customersMails = $this->mailing->customerMails;
         foreach ($customersMails as $mail)
         {
-            Mail::dispatch(new SendMail($mail));
+            Mail::to($mail->customer->email)->send(new SendMail($mail, $this->mailing->msg, $this->mailing->name));
+            $mail->update(['status' => 1]);
+            sleep(10);
         }
+
+        $this->mailing->update(['status' => 1]);
 
     }
 }
