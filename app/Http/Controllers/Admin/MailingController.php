@@ -39,19 +39,21 @@ class MailingController extends Controller
         return back()->with(['notification' => "$mailing->name is stopped"]);
     }
 
-    public function show(Mailing $mailing)
+    public function show(Mailing $mailing): View
     {
         return view('admin.mails.show', compact('mailing'));
     }
 
-    public function chart()
+    public function chart(): Response
     {
-
+        $result = $this->mailService->chart();
+        return response(['data' => $result]);
     }
 
-    public function pie()
+    public function pie(): Response
     {
-
+        $result = $this->mailService->pie();
+        return response(['data' => $result]);
     }
 
 }

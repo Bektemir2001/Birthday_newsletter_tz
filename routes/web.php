@@ -29,5 +29,7 @@ Route::group(['prefix' => 'admin'], function (){
         Route::get('/', [MailingController::class, 'index'])->name('mailing.index');
         Route::get('/stop/{mailing}', [MailingController::class, 'stop'])->name('mailing.stop');
         Route::get('/show/{mailing}', [MailingController::class, 'show'])->name('mailing.show');
+        Route::get('/chart', [MailingController::class, 'chart'])->name('mailing.chart');
+        Route::get('/pie', [MailingController::class, 'pie'])->name('mailing.pie');
     });
 });
