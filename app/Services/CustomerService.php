@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Customer;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -84,11 +85,12 @@ class CustomerService
     public function saveData($contents): void
     {
         foreach ($contents as $row) {
+            $birthday = Carbon::createFromFormat('d.m.Y', $row['день рождения']);
             $customer = new Customer();
             $customer->full_name = $row['фио'];
             $customer->phone_number = $row['телефон'];
             $customer->email = $row['почта'];
-            $customer->birthday = $row['день рождения'];
+            $customer->birthday = $birthday->format('Y-m-d');;
             $customer->save();
         }
     }

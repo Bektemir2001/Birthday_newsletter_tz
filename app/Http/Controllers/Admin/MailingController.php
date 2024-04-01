@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MailingRequest;
+use App\Models\CustomerMail;
 use App\Models\Mailing;
 use App\Services\MailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class MailingController extends Controller
@@ -35,7 +37,16 @@ class MailingController extends Controller
 
     public function stop(Mailing $mailing): RedirectResponse
     {
-        $mailing->update(['status' => 2]);
+        foreach ($mailing->customerMails as $mail)
+        {
+            if($mail->status == 'PENDING')
+            {
+
+                DB::table('jobs')->where('id', $mail->job_id)->delete();
+                $mail->update(['status' => CustomerMail::CANCELLED]);
+            }
+        }
+        $mailing->update(['status' => Mailing::CANCELLED]);
         return back()->with(['notification' => "$mailing->name is stopped"]);
     }
 

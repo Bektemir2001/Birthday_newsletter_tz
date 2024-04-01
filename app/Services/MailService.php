@@ -22,7 +22,17 @@ class MailService
             $customer_ids = explode(',', $data['customer_ids']);
             DB::beginTransaction();
             $mailing = $this->mailingRepository->createMailing($data, $customer_ids);
-            SendMailJob::dispatch($mailing);
+            $lastMail = end($mailing->customerMails);
+            foreach ($mailing->customerMails as $mail)
+            {
+                SendMailJob::dispatch($mail, $mailing->name, $mailing->msg);
+                $lastJobId = DB::table('jobs')->latest('id')->first()->id;
+                $mail->update(['job_id' => $lastJobId]);
+                if ($mail === $lastMail) {
+                    $mail->update(['is_last' => true]);
+                }
+            }
+
             DB::commit();
             return ['message' => 'success', 'status' => 200];
         }
@@ -63,6 +73,6 @@ class MailService
     public function pie()
     {
         $data = $this->mailingRepository->pieData();
-        return $data->toArray();
+        return ['statuses' => $data->pluck('status'), 'counts' => $data->pluck('count')];
     }
 }

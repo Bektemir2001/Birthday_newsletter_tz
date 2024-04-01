@@ -3,6 +3,9 @@
     <div class="container">
         <div class="d-flex justify-content-between">
             <h2>{{$mailing->name}}</h2>
+            @if($mailing->status == 'PENDING')
+                <a href="{{route('mailing.stop', $mailing->id)}}" class="btn btn-danger">Остонавить</a>
+            @endif
         </div>
 
         <div>

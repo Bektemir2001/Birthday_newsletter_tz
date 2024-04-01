@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\MailingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('admin.index');
 });
 
 Route::get('/failed-jobs', function (){
@@ -14,7 +14,7 @@ Route::get('/failed-jobs', function (){
 });
 Auth::routes();
 
-Route::group(['prefix' => 'admin'], function (){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){
     Route::get('/', [IndexController::class, 'index'])->name('admin.index');
 
     Route::group(['prefix' => 'customers'], function (){

@@ -23,6 +23,10 @@ class CustomerMail extends Model
             self::CANCELLED => 'CANCELLED'
         ];
     }
+    public function mailing()
+    {
+        return $this->belongsTo(Mailing::class, 'mail_id');
+    }
     public function customer()
     {
         return $this->belongsTo(Customer::class);

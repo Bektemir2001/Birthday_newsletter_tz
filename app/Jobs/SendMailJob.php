@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\SendMail;
+use App\Models\CustomerMail;
 use App\Models\Mailing;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,10 +19,14 @@ class SendMailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    protected Mailing $mailing;
-    public function __construct(Mailing $mailing)
+    protected CustomerMail $mailing;
+    protected string $name;
+    protected string $msg;
+    public function __construct(CustomerMail $mailing, string $name, string $msg)
     {
         $this->mailing = $mailing;
+        $this->name = $name;
+        $this->msg = $msg;
     }
 
     /**
@@ -29,15 +34,13 @@ class SendMailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $customersMails = $this->mailing->customerMails;
-        foreach ($customersMails as $mail)
+        $mail = $this->mailing;
+        Mail::to($mail->customer->email)->send(new SendMail($mail, $this->msg, $this->name));
+        $mail->update(['status' => CustomerMail::SENT]);
+        if($mail->is_last)
         {
-            Mail::to($mail->customer->email)->send(new SendMail($mail, $this->mailing->msg, $this->mailing->name));
-            $mail->update(['status' => 1]);
-            sleep(10);
+            $mail->mailing->update(['status' => Mailing::SENT]);
         }
-
-        $this->mailing->update(['status' => 1]);
-
+        sleep(20);
     }
 }

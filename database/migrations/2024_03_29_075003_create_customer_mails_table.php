@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('mail_id');
             $table->unsignedSmallInteger('status')->default(0);
+            $table->unsignedBigInteger('job_id')->nullable();
+            $table->boolean('is_last')->default(false);
             $table->timestamps();
 
             $table->index('customer_id');
