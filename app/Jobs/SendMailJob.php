@@ -40,7 +40,11 @@ class SendMailJob implements ShouldQueue
         if($mail->is_last)
         {
             $mail->mailing->update(['status' => Mailing::SENT]);
+
         }
-        sleep(20);
+        else{
+            sleep(20);
+        }
+
     }
 }

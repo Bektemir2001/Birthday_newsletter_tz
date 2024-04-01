@@ -22,13 +22,13 @@ class MailService
             $customer_ids = explode(',', $data['customer_ids']);
             DB::beginTransaction();
             $mailing = $this->mailingRepository->createMailing($data, $customer_ids);
-            $lastMail = end($mailing->customerMails);
+            $lastMail = $mailing->customerMails->last();
             foreach ($mailing->customerMails as $mail)
             {
                 SendMailJob::dispatch($mail, $mailing->name, $mailing->msg);
                 $lastJobId = DB::table('jobs')->latest('id')->first()->id;
                 $mail->update(['job_id' => $lastJobId]);
-                if ($mail === $lastMail) {
+                if ($mail->id === $lastMail->id) {
                     $mail->update(['is_last' => true]);
                 }
             }
